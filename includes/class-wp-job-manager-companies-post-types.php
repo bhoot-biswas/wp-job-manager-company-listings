@@ -41,4 +41,13 @@ class WP_Job_Manager_Companies_Post_Types {
 		add_action( 'init', [ $this, 'register_post_types' ], 0 );
 	}
 
+	/**
+	 * Registers the custom post type and taxonomies.
+	 */
+	public function register_post_types() {
+		if ( post_type_exists( 'company_listing' ) ) {
+			return;
+		}
+	}
+
 }
