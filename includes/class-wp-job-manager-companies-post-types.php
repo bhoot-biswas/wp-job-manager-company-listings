@@ -172,14 +172,6 @@ class WP_Job_Manager_Companies_Post_Types {
 				'show_in_admin' => true,
 				'show_in_rest'  => true,
 			],
-			'_name'     => [
-				'label'         => __( 'Name', 'wp-job-manager-companies' ),
-				'placeholder'   => '',
-				'priority'      => 3,
-				'data_type'     => 'string',
-				'show_in_admin' => true,
-				'show_in_rest'  => true,
-			],
 			'_website'  => [
 				'label'             => __( 'Website', 'wp-job-manager-companies' ),
 				'placeholder'       => '',
@@ -215,7 +207,7 @@ class WP_Job_Manager_Companies_Post_Types {
 				'show_in_rest'      => true,
 				'sanitize_callback' => [ 'WP_Job_Manager_Post_Types', 'sanitize_meta_field_url' ],
 			],
-			'_featured' => [
+			'_featured'         => [
 				'label'              => __( 'Featured Listing', 'wp-job-manager-companies' ),
 				'type'               => 'checkbox',
 				'description'        => __( 'Featured listings will be sticky during searches, and can be styled differently.', 'wp-job-manager-companies' ),
