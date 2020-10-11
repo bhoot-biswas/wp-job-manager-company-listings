@@ -39,8 +39,8 @@ class WP_Job_Manager_Companies_Writepanels {
 	 */
 	public function __construct() {
 		add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
-		// add_action( 'save_post', [ $this, 'save_post' ], 1, 2 );
-		// add_action( 'job_manager_companies_save_company_listing', [ $this, 'save_company_listing_data' ], 20, 2 );
+		add_action( 'save_post', [ $this, 'save_post' ], 1, 2 );
+		add_action( 'job_manager_save_company_listing', [ $this, 'save_company_listing_data' ], 20, 2 );
 	}
 
 	/**
@@ -86,6 +86,53 @@ class WP_Job_Manager_Companies_Writepanels {
 		}
 
 		do_action( 'job_manager_save_company_listing', $post_id, $post );
+	}
+
+	/**
+	 * Handles the actual saving of company listing data fields.
+	 *
+	 * @param int     $post_id
+	 * @param WP_Post $post (Unused).
+	 */
+	public function save_company_listing_data( $post_id, $post ) {
+		global $wpdb;
+
+		// These need to exist.
+		add_post_meta( $post_id, '_featured', 0, true );
+
+		// Save fields.
+		foreach ( $this->company_listing_fields() as $key => $field ) {
+			if ( isset( $field['type'] ) && 'info' === $field['type'] ) {
+				continue;
+			}
+
+			// Checkboxes that aren't sent are unchecked.
+			if ( 'checkbox' === $field['type'] ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce check handled by WP core.
+				if ( ! empty( $_POST[ $key ] ) ) {
+					$_POST[ $key ] = 1;
+				} else {
+					$_POST[ $key ] = 0;
+				}
+			}
+
+			// Expirey date.
+			if ( '_company_author' === $key ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce check handled by WP core.
+				if ( empty( $_POST[ $key ] ) ) {
+					$_POST[ $key ] = 0;
+				}
+
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce check handled by WP core.
+				$input_post_author = $_POST[ $key ] > 0 ? intval( $_POST[ $key ] ) : 0;
+
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Avoid update post within `save_post` action.
+				$wpdb->update( $wpdb->posts, [ 'post_author' => $input_post_author ], [ 'ID' => $post_id ] );
+			} elseif ( isset( $_POST[ $key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce check handled by WP core.
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing -- Input sanitized in registered post meta config; see WP_Job_Manager_Post_Types::register_meta_fields() and WP_Job_Manager_Post_Types::get_job_listing_fields() methods.
+				update_post_meta( $post_id, $key, wp_unslash( $_POST[ $key ] ) );
+			}
+		}
 	}
 
 	/**
