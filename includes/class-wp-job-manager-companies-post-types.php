@@ -223,7 +223,7 @@ class WP_Job_Manager_Companies_Post_Types {
 				'data_type'          => 'integer',
 				'show_in_admin'      => true,
 				'show_in_rest'       => true,
-				'auth_edit_callback' => [ __CLASS__, 'auth_check_can_manage_job_listings' ],
+				'auth_edit_callback' => [ __CLASS__, 'auth_check_can_manage_company_listings' ],
 			],
 		];
 
@@ -239,6 +239,24 @@ class WP_Job_Manager_Companies_Post_Types {
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Checks if user can manage company listings.
+	 * @param  [type] $allowed  [description]
+	 * @param  [type] $meta_key [description]
+	 * @param  [type] $post_id  [description]
+	 * @param  [type] $user_id  [description]
+	 * @return [type]           [description]
+	 */
+	public static function auth_check_can_manage_company_listings( $allowed, $meta_key, $post_id, $user_id ) {
+		$user = get_user_by( 'ID', $user_id );
+
+		if ( ! $user ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
