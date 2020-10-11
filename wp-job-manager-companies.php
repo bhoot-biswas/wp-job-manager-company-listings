@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:     Companies for WP Job Manager
+ * Plugin Name:     Company Listings for WP Job Manager
  * Plugin URI:      PLUGIN SITE HERE
  * Description:     PLUGIN DESCRIPTION HERE
  * Author:          Bengal Studio
