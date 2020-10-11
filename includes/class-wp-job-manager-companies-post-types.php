@@ -48,6 +48,95 @@ class WP_Job_Manager_Companies_Post_Types {
 		if ( post_type_exists( 'company_listing' ) ) {
 			return;
 		}
+
+		/**
+		 * Post types
+		 */
+		$singular            = __( 'Company', 'wp-job-manager-companies' );
+		$plural              = __( 'Companies', 'wp-job-manager-companies' );
+		$permalink_structure = [
+			'company_rewrite_slug'            => _x( 'company', 'Company permalink - resave permalinks after changing this', 'wp-job-manager-companies' ),
+			'companiess_archive_rewrite_slug' => 'company-listings',
+		];
+
+		/**
+		 * Set whether to add archive page support when registering the company listing post type.
+		 * @var [type]
+		 */
+		if ( apply_filters( 'job_manager_companies_enable_company_archive_page', current_theme_supports( 'job-manager-templates' ) ) ) {
+			$has_archive = $permalink_structure['companiess_archive_rewrite_slug'];
+		} else {
+			$has_archive = false;
+		}
+
+		$rewrite = [
+			'slug'       => $permalink_structure['company_rewrite_slug'],
+			'with_front' => false,
+			'feeds'      => true,
+			'pages'      => false,
+		];
+
+		register_post_type(
+			'company_listing',
+			apply_filters(
+				'register_post_type_company_listing',
+				[
+					'labels'                => [
+						'name'                  => $plural,
+						'singular_name'         => $singular,
+						'menu_name'             => __( 'Company Listings', 'wp-job-manager-companies' ),
+						// translators: Placeholder %s is the plural label of the job listing post type.
+						'all_items'             => sprintf( __( 'All %s', 'wp-job-manager-companies' ), $plural ),
+						'add_new'               => __( 'Add New', 'wp-job-manager-companies' ),
+						// translators: Placeholder %s is the singular label of the job listing post type.
+						'add_new_item'          => sprintf( __( 'Add %s', 'wp-job-manager-companies' ), $singular ),
+						'edit'                  => __( 'Edit', 'wp-job-manager-companies' ),
+						// translators: Placeholder %s is the singular label of the job listing post type.
+						'edit_item'             => sprintf( __( 'Edit %s', 'wp-job-manager-companies' ), $singular ),
+						// translators: Placeholder %s is the singular label of the job listing post type.
+						'new_item'              => sprintf( __( 'New %s', 'wp-job-manager-companies' ), $singular ),
+						// translators: Placeholder %s is the singular label of the job listing post type.
+						'view'                  => sprintf( __( 'View %s', 'wp-job-manager-companies' ), $singular ),
+						// translators: Placeholder %s is the singular label of the job listing post type.
+						'view_item'             => sprintf( __( 'View %s', 'wp-job-manager-companies' ), $singular ),
+						// translators: Placeholder %s is the singular label of the job listing post type.
+						'search_items'          => sprintf( __( 'Search %s', 'wp-job-manager-companies' ), $plural ),
+						// translators: Placeholder %s is the singular label of the job listing post type.
+						'not_found'             => sprintf( __( 'No %s found', 'wp-job-manager-companies' ), $plural ),
+						// translators: Placeholder %s is the plural label of the job listing post type.
+						'not_found_in_trash'    => sprintf( __( 'No %s found in trash', 'wp-job-manager-companies' ), $plural ),
+						// translators: Placeholder %s is the singular label of the job listing post type.
+						'parent'                => sprintf( __( 'Parent %s', 'wp-job-manager-companies' ), $singular ),
+						'featured_image'        => __( 'Company Logo', 'wp-job-manager-companies' ),
+						'set_featured_image'    => __( 'Set company logo', 'wp-job-manager-companies' ),
+						'remove_featured_image' => __( 'Remove company logo', 'wp-job-manager-companies' ),
+						'use_featured_image'    => __( 'Use as company logo', 'wp-job-manager-companies' ),
+					],
+					// translators: Placeholder %s is the plural label of the job listing post type.
+					'description'           => sprintf( __( 'This is where you can create and manage %s.', 'wp-job-manager-companies' ), $plural ),
+					'public'                => true,
+					'show_ui'               => true,
+					'capability_type'       => 'job_listing',
+					'map_meta_cap'          => true,
+					'publicly_queryable'    => true,
+					'exclude_from_search'   => false,
+					'hierarchical'          => false,
+					'rewrite'               => $rewrite,
+					'query_var'             => true,
+					'supports'              => [ 'title', 'editor', 'custom-fields', 'publicize', 'thumbnail', 'author' ],
+					'has_archive'           => $has_archive,
+					'show_in_nav_menus'     => false,
+					'delete_with_user'      => true,
+					'show_in_rest'          => true,
+					'rest_base'             => 'company-listings',
+					'rest_controller_class' => 'WP_REST_Posts_Controller',
+					'template'              => [ [ 'core/freeform' ] ],
+					'template_lock'         => 'all',
+					'menu_position'         => 30,
+					'menu_icon'             => 'dashicons-building',
+				]
+			)
+		);
 	}
 
 }

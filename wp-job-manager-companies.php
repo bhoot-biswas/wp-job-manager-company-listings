@@ -22,5 +22,5 @@ define( 'WP_JOB_MANAGER_COMPANIES_PLUGIN_DIR', untrailingslashit( plugin_dir_pat
 define( 'WP_JOB_MANAGER_COMPANIES_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
 define( 'WP_JOB_MANAGER_COMPANIES_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
-// Require the main WP_Job_Manager_Shortcodes class.
+// Require the main WP_Job_Manager_Companies class.
 require_once dirname( __FILE__ ) . '/includes/class-wp-job-manager-companies.php';
