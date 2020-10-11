@@ -42,7 +42,7 @@ final class WP_Job_Manager_Companies {
 		include_once WP_JOB_MANAGER_COMPANIES_PLUGIN_DIR . '/includes/class-wp-job-manager-companies-post-types.php';
 
 		if ( is_admin() ) {
-			include_once JOB_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-job-manager-companies-admin.php';
+			include_once WP_JOB_MANAGER_COMPANIES_PLUGIN_DIR . '/includes/admin/class-wp-job-manager-companies-admin.php';
 		}
 
 		// Init classes.

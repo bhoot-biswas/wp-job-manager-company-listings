@@ -39,8 +39,8 @@ class WP_Job_Manager_Companies_Writepanels {
 	 */
 	public function __construct() {
 		add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
-		add_action( 'save_post', [ $this, 'save_post' ], 1, 2 );
-		add_action( 'job_manager_companies_save_company_listing', [ $this, 'save_company_listing_data' ], 20, 2 );
+		// add_action( 'save_post', [ $this, 'save_post' ], 1, 2 );
+		// add_action( 'job_manager_companies_save_company_listing', [ $this, 'save_company_listing_data' ], 20, 2 );
 	}
 
 	/**
@@ -159,8 +159,8 @@ class WP_Job_Manager_Companies_Writepanels {
 
 			if ( has_action( 'job_manager_input_' . $type ) ) {
 				do_action( 'job_manager_input_' . $type, $key, $field );
-			} elseif ( method_exists( $this, 'input_' . $type ) ) {
-				call_user_func( [ $this, 'input_' . $type ], $key, $field );
+			} elseif ( method_exists( 'WP_Job_Manager_Writepanels', 'input_' . $type ) ) {
+				call_user_func( [ 'WP_Job_Manager_Writepanels', 'input_' . $type ], $key, $field );
 			}
 		}
 
