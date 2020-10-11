@@ -144,7 +144,7 @@ class WP_Job_Manager_Companies_Post_Types {
 	 *
 	 * @return array See `job_manager_company_listing_data_fields` filter for more documentation.
 	 */
-	public static function get_job_listing_fields() {
+	public static function get_company_listing_fields() {
 		$default_field = [
 			'label'              => null,
 			'placeholder'        => null,
@@ -157,9 +157,9 @@ class WP_Job_Manager_Companies_Post_Types {
 			'data_type'          => 'string',
 			'show_in_admin'      => true,
 			'show_in_rest'       => false,
-			'auth_edit_callback' => [ __CLASS__, 'auth_check_can_edit_job_listings' ],
+			'auth_edit_callback' => [ 'WP_Job_Manager_Post_Types', 'auth_check_can_edit_job_listings' ],
 			'auth_view_callback' => null,
-			'sanitize_callback'  => [ __CLASS__, 'sanitize_meta_field_based_on_input_type' ],
+			'sanitize_callback'  => [ 'WP_Job_Manager_Post_Types', 'sanitize_meta_field_based_on_input_type' ],
 		];
 
 		$fields = [
@@ -187,7 +187,7 @@ class WP_Job_Manager_Companies_Post_Types {
 				'data_type'         => 'string',
 				'show_in_admin'     => true,
 				'show_in_rest'      => true,
-				'sanitize_callback' => [ __CLASS__, 'sanitize_meta_field_url' ],
+				'sanitize_callback' => [ 'WP_Job_Manager_Post_Types', 'sanitize_meta_field_url' ],
 			],
 			'_company_tagline'  => [
 				'label'         => __( 'Company Tagline', 'wp-job-manager-companies' ),
@@ -213,7 +213,7 @@ class WP_Job_Manager_Companies_Post_Types {
 				'data_type'         => 'string',
 				'show_in_admin'     => true,
 				'show_in_rest'      => true,
-				'sanitize_callback' => [ __CLASS__, 'sanitize_meta_field_url' ],
+				'sanitize_callback' => [ 'WP_Job_Manager_Post_Types', 'sanitize_meta_field_url' ],
 			],
 			'_featured'         => [
 				'label'              => __( 'Featured Listing', 'wp-job-manager-companies' ),
@@ -223,7 +223,7 @@ class WP_Job_Manager_Companies_Post_Types {
 				'data_type'          => 'integer',
 				'show_in_admin'      => true,
 				'show_in_rest'       => true,
-				'auth_edit_callback' => [ __CLASS__, 'auth_check_can_manage_company_listings' ],
+				'auth_edit_callback' => [ 'WP_Job_Manager_Post_Types', 'auth_check_can_manage_job_listings' ],
 			],
 		];
 
@@ -239,42 +239,6 @@ class WP_Job_Manager_Companies_Post_Types {
 		}
 
 		return $fields;
-	}
-
-	/**
-	 * Checks if user can manage company listings.
-	 * @param  [type] $allowed  [description]
-	 * @param  [type] $meta_key [description]
-	 * @param  [type] $post_id  [description]
-	 * @param  [type] $user_id  [description]
-	 * @return [type]           [description]
-	 */
-	public static function auth_check_can_manage_company_listings( $allowed, $meta_key, $post_id, $user_id ) {
-		$user = get_user_by( 'ID', $user_id );
-
-		if ( ! $user ) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Checks if user can edit company listings.
-	 * @param  [type] $allowed  [description]
-	 * @param  [type] $meta_key [description]
-	 * @param  [type] $post_id  [description]
-	 * @param  [type] $user_id  [description]
-	 * @return [type]           [description]
-	 */
-	public static function auth_check_can_edit_company_listings( $allowed, $meta_key, $post_id, $user_id ) {
-		$user = get_user_by( 'ID', $user_id );
-
-		if ( ! $user ) {
-			return false;
-		}
-
-		return true;
 	}
 
 }
