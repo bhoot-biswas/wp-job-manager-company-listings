@@ -44,6 +44,68 @@ class WP_Job_Manager_Companies_Writepanels {
 	}
 
 	/**
+	 * Returns configuration for custom fields on Company Listing posts.
+	 *
+	 * @return array
+	 */
+	public function company_listing_fields() {
+		global $post_id;
+
+		$current_user = wp_get_current_user();
+		$fields_raw   = WP_Job_Manager_Companies_Post_Types::get_company_listing_fields();
+		$fields       = [];
+
+		if ( $current_user->has_cap( 'edit_others_job_listings' ) ) {
+			$fields['_company_author'] = [
+				'label'    => __( 'Posted by', 'wp-job-manager-companies' ),
+				'type'     => 'author',
+				'priority' => 0,
+			];
+		}
+
+		foreach ( $fields_raw as $meta_key => $field ) {
+			$show_in_admin = $field['show_in_admin'];
+			if ( is_callable( $show_in_admin ) ) {
+				$show_in_admin = (bool) call_user_func( $show_in_admin, true, $meta_key, $post_id, $current_user->ID );
+			}
+
+			if ( ! $show_in_admin ) {
+				continue;
+			}
+
+			/**
+			 * Check auth callback. Mirrors first 4 params of WordPress core's `auth_{$object_type}_meta_{$meta_key}` filter.
+			 *
+			 * @param bool   $allowed   Whether the user can edit the company listing meta. Default false.
+			 * @param string $meta_key  The meta key.
+			 * @param int    $object_id Object ID.
+			 * @param int    $user_id   User ID.
+			 */
+			if ( ! call_user_func( $field['auth_edit_callback'], false, $meta_key, $post_id, $current_user->ID ) ) {
+				continue;
+			}
+
+			$fields[ $meta_key ] = $field;
+		}
+
+		/**
+		 * Filters company listing data fields shown in WP admin.
+		 *
+		 * To add company listing data fields, use the `job_manager_company_listing_data_fields` found in `includes/class-wp-job-manager-companies-post-types.php`.
+		 *
+		 * @since 0.1.0
+		 *
+		 * @param array    $fields  Company listing fields for WP admin. See `job_manager_company_listing_data_fields` filter for more information.
+		 * @param int|null $post_id Post ID to get fields for. May be null.
+		 */
+		$fields = apply_filters( 'job_manager_company_listing_wp_admin_fields', $fields, $post_id );
+
+		uasort( $fields, [ __CLASS__, 'sort_by_priority' ] );
+
+		return $fields;
+	}
+
+	/**
 	 * Handles the hooks to add custom field meta boxes.
 	 */
 	public function add_meta_boxes() {
