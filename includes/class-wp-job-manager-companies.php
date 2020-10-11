@@ -41,6 +41,10 @@ final class WP_Job_Manager_Companies {
 		// Includes.
 		include_once WP_JOB_MANAGER_COMPANIES_PLUGIN_DIR . '/includes/class-wp-job-manager-companies-post-types.php';
 
+		if ( is_admin() ) {
+			include_once JOB_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-job-manager-companies-admin.php';
+		}
+
 		// Init classes.
 		$this->post_types = WP_Job_Manager_Companies_Post_Types::instance();
 
