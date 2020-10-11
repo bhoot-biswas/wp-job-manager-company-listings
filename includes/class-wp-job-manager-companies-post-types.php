@@ -163,7 +163,7 @@ class WP_Job_Manager_Companies_Post_Types {
 		];
 
 		$fields = [
-			'_company_location' => [
+			'_location' => [
 				'label'         => __( 'Location', 'wp-job-manager-companies' ),
 				'placeholder'   => __( 'e.g. "London"', 'wp-job-manager-companies' ),
 				'description'   => __( 'Leave this blank if the location is not important.', 'wp-job-manager-companies' ),
@@ -172,16 +172,16 @@ class WP_Job_Manager_Companies_Post_Types {
 				'show_in_admin' => true,
 				'show_in_rest'  => true,
 			],
-			'_company_name'     => [
-				'label'         => __( 'Company Name', 'wp-job-manager-companies' ),
+			'_name'     => [
+				'label'         => __( 'Name', 'wp-job-manager-companies' ),
 				'placeholder'   => '',
 				'priority'      => 3,
 				'data_type'     => 'string',
 				'show_in_admin' => true,
 				'show_in_rest'  => true,
 			],
-			'_company_website'  => [
-				'label'             => __( 'Company Website', 'wp-job-manager-companies' ),
+			'_website'  => [
+				'label'             => __( 'Website', 'wp-job-manager-companies' ),
 				'placeholder'       => '',
 				'priority'          => 4,
 				'data_type'         => 'string',
@@ -189,24 +189,24 @@ class WP_Job_Manager_Companies_Post_Types {
 				'show_in_rest'      => true,
 				'sanitize_callback' => [ 'WP_Job_Manager_Post_Types', 'sanitize_meta_field_url' ],
 			],
-			'_company_tagline'  => [
-				'label'         => __( 'Company Tagline', 'wp-job-manager-companies' ),
+			'_tagline'  => [
+				'label'         => __( 'Tagline', 'wp-job-manager-companies' ),
 				'placeholder'   => __( 'Brief description about the company', 'wp-job-manager-companies' ),
 				'priority'      => 5,
 				'data_type'     => 'string',
 				'show_in_admin' => true,
 				'show_in_rest'  => true,
 			],
-			'_company_twitter'  => [
-				'label'         => __( 'Company Twitter', 'wp-job-manager-companies' ),
+			'_twitter'  => [
+				'label'         => __( 'Twitter', 'wp-job-manager-companies' ),
 				'placeholder'   => '@yourcompany',
 				'priority'      => 6,
 				'data_type'     => 'string',
 				'show_in_admin' => true,
 				'show_in_rest'  => true,
 			],
-			'_company_video'    => [
-				'label'             => __( 'Company Video', 'wp-job-manager-companies' ),
+			'_video'    => [
+				'label'             => __( 'Video', 'wp-job-manager-companies' ),
 				'placeholder'       => __( 'URL to the company video', 'wp-job-manager-companies' ),
 				'type'              => 'file',
 				'priority'          => 8,
@@ -215,7 +215,7 @@ class WP_Job_Manager_Companies_Post_Types {
 				'show_in_rest'      => true,
 				'sanitize_callback' => [ 'WP_Job_Manager_Post_Types', 'sanitize_meta_field_url' ],
 			],
-			'_featured'         => [
+			'_featured' => [
 				'label'              => __( 'Featured Listing', 'wp-job-manager-companies' ),
 				'type'               => 'checkbox',
 				'description'        => __( 'Featured listings will be sticky during searches, and can be styled differently.', 'wp-job-manager-companies' ),
