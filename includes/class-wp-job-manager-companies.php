@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Job_Manager_Companies setup
+ * File containing the class WP_Job_Manager_Companies.
  *
  * @package WP_Job_Manager_Companies
  */
@@ -12,28 +12,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Main WP_Job_Manager_Companies Class.
+ * Handles core plugin hooks and action setup.
+ * @var [type]
  */
 final class WP_Job_Manager_Companies {
 
 	/**
 	 * The single instance of the class.
-	 *
-	 * @var WP_Job_Manager_Companies
+	 * @var [type]
 	 */
-	protected static $_instance = null; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+	private static $instance = null;
 
 	/**
-	 * Main WP_Job_Manager_Companies Instance.
 	 * Ensures only one instance of WP_Job_Manager_Companies is loaded or can be loaded.
-	 *
-	 * @return WP_Job_Manager_Companies - Main instance.
+	 * @return [type] [description]
 	 */
 	public static function instance() {
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return self::$_instance;
+		return self::$instance;
 	}
 
 	/**
