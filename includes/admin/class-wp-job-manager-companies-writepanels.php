@@ -43,6 +43,16 @@ class WP_Job_Manager_Companies_Writepanels {
 		add_action( 'job_manager_companies_save_company_listing', [ $this, 'save_company_listing_data' ], 20, 2 );
 	}
 
+	/**
+	 * Handles the hooks to add custom field meta boxes.
+	 */
+	public function add_meta_boxes() {
+		global $wp_post_types;
+
+		// translators: Placeholder %s is the singular name for a company listing post type.
+		add_meta_box( 'company_listing_data', sprintf( __( '%s Data', 'wp-job-manager-companies' ), $wp_post_types['company_listing']->labels->singular_name ), [ $this, 'company_listing_data' ], 'company_listing', 'normal', 'high' );
+	}
+
 }
 
 WP_Job_Manager_Companies_Writepanels::instance();
