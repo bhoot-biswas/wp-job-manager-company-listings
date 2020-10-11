@@ -38,6 +38,13 @@ final class WP_Job_Manager_Companies {
 	 * WP_Job_Manager_Companies Constructor.
 	 */
 	public function __construct() {
+		// Includes.
+		include_once WP_JOB_MANAGER_COMPANIES_PLUGIN_DIR . '/includes/class-wp-job-manager-companies-post-types.php';
+
+		// Init classes.
+		$this->post_types = WP_Job_Manager_Companies_Post_Types::instance();
+
+		// Actions.
 		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ] );
 	}
 
