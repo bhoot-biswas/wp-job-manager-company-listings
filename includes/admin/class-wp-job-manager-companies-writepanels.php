@@ -106,6 +106,21 @@ class WP_Job_Manager_Companies_Writepanels {
 	}
 
 	/**
+	 * Sorts array of custom fields by priority value.
+	 *
+	 * @param array $a
+	 * @param array $b
+	 * @return int
+	 */
+	protected static function sort_by_priority( $a, $b ) {
+		if ( ! isset( $a['priority'] ) || ! isset( $b['priority'] ) || $a['priority'] === $b['priority'] ) {
+			return 0;
+		}
+
+		return ( $a['priority'] < $b['priority'] ) ? -1 : 1;
+	}
+
+	/**
 	 * Handles the hooks to add custom field meta boxes.
 	 */
 	public function add_meta_boxes() {
