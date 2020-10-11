@@ -139,4 +139,106 @@ class WP_Job_Manager_Companies_Post_Types {
 		);
 	}
 
+	/**
+	 * Returns configuration for custom fields on Company Listing posts.
+	 *
+	 * @return array See `job_manager_company_listing_data_fields` filter for more documentation.
+	 */
+	public static function get_job_listing_fields() {
+		$default_field = [
+			'label'              => null,
+			'placeholder'        => null,
+			'description'        => null,
+			'priority'           => 10,
+			'value'              => null,
+			'default'            => null,
+			'classes'            => [],
+			'type'               => 'text',
+			'data_type'          => 'string',
+			'show_in_admin'      => true,
+			'show_in_rest'       => false,
+			'auth_edit_callback' => [ __CLASS__, 'auth_check_can_edit_job_listings' ],
+			'auth_view_callback' => null,
+			'sanitize_callback'  => [ __CLASS__, 'sanitize_meta_field_based_on_input_type' ],
+		];
+
+		$fields = [
+			'_company_location' => [
+				'label'         => __( 'Location', 'wp-job-manager-companies' ),
+				'placeholder'   => __( 'e.g. "London"', 'wp-job-manager-companies' ),
+				'description'   => __( 'Leave this blank if the location is not important.', 'wp-job-manager-companies' ),
+				'priority'      => 1,
+				'data_type'     => 'string',
+				'show_in_admin' => true,
+				'show_in_rest'  => true,
+			],
+			'_company_name'     => [
+				'label'         => __( 'Company Name', 'wp-job-manager-companies' ),
+				'placeholder'   => '',
+				'priority'      => 3,
+				'data_type'     => 'string',
+				'show_in_admin' => true,
+				'show_in_rest'  => true,
+			],
+			'_company_website'  => [
+				'label'             => __( 'Company Website', 'wp-job-manager-companies' ),
+				'placeholder'       => '',
+				'priority'          => 4,
+				'data_type'         => 'string',
+				'show_in_admin'     => true,
+				'show_in_rest'      => true,
+				'sanitize_callback' => [ __CLASS__, 'sanitize_meta_field_url' ],
+			],
+			'_company_tagline'  => [
+				'label'         => __( 'Company Tagline', 'wp-job-manager-companies' ),
+				'placeholder'   => __( 'Brief description about the company', 'wp-job-manager-companies' ),
+				'priority'      => 5,
+				'data_type'     => 'string',
+				'show_in_admin' => true,
+				'show_in_rest'  => true,
+			],
+			'_company_twitter'  => [
+				'label'         => __( 'Company Twitter', 'wp-job-manager-companies' ),
+				'placeholder'   => '@yourcompany',
+				'priority'      => 6,
+				'data_type'     => 'string',
+				'show_in_admin' => true,
+				'show_in_rest'  => true,
+			],
+			'_company_video'    => [
+				'label'             => __( 'Company Video', 'wp-job-manager-companies' ),
+				'placeholder'       => __( 'URL to the company video', 'wp-job-manager-companies' ),
+				'type'              => 'file',
+				'priority'          => 8,
+				'data_type'         => 'string',
+				'show_in_admin'     => true,
+				'show_in_rest'      => true,
+				'sanitize_callback' => [ __CLASS__, 'sanitize_meta_field_url' ],
+			],
+			'_featured'         => [
+				'label'              => __( 'Featured Listing', 'wp-job-manager-companies' ),
+				'type'               => 'checkbox',
+				'description'        => __( 'Featured listings will be sticky during searches, and can be styled differently.', 'wp-job-manager-companies' ),
+				'priority'           => 10,
+				'data_type'          => 'integer',
+				'show_in_admin'      => true,
+				'show_in_rest'       => true,
+				'auth_edit_callback' => [ __CLASS__, 'auth_check_can_manage_job_listings' ],
+			],
+		];
+
+		/**
+		 * Filters company listing data fields.
+		 * @var [type]
+		 */
+		$fields = apply_filters( 'job_manager_company_listing_data_fields', $fields );
+
+		// Ensure default fields are set.
+		foreach ( $fields as $key => $field ) {
+			$fields[ $key ] = array_merge( $default_field, $field );
+		}
+
+		return $fields;
+	}
+
 }
