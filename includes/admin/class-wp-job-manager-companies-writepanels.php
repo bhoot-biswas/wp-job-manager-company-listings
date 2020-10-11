@@ -54,6 +54,41 @@ class WP_Job_Manager_Companies_Writepanels {
 	}
 
 	/**
+	 * Handles `save_post` action.
+	 *
+	 * @param int     $post_id
+	 * @param WP_Post $post
+	 */
+	public function save_post( $post_id, $post ) {
+		if ( empty( $post_id ) || empty( $post ) || empty( $_POST ) ) {
+			return;
+		}
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+		if ( is_int( wp_is_post_revision( $post ) ) ) {
+			return;
+		}
+		if ( is_int( wp_is_post_autosave( $post ) ) ) {
+			return;
+		}
+		if (
+			empty( $_POST['job_manager_nonce'] )
+			|| ! wp_verify_nonce( wp_unslash( $_POST['job_manager_nonce'] ), 'save_meta_data' ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce should not be modified.
+		) {
+			return;
+		}
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+		if ( 'company_listing' !== $post->post_type ) {
+			return;
+		}
+
+		do_action( 'job_manager_save_company_listing', $post_id, $post );
+	}
+
+	/**
 	 * Displays metadata fields for Company Listings.
 	 *
 	 * @param int|WP_Post $post
