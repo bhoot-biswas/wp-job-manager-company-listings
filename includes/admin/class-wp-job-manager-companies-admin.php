@@ -39,6 +39,17 @@ class WP_Job_Manager_Companies_Admin {
 	 */
 	public function __construct() {
 		include_once dirname( __FILE__ ) . '/class-wp-job-manager-companies-writepanels.php';
+		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
+	}
+
+	/**
+	 * Enqueues CSS and JS assets.
+	 */
+	public function admin_enqueue_scripts() {
+		$screen = get_current_screen();
+		if ( in_array( $screen->id, apply_filters( 'job_manager_admin_screen_ids', [ 'edit-company_listing', 'company_listing' ] ), true ) ) {
+			wp_enqueue_style( 'job_manager_admin_css', JOB_MANAGER_PLUGIN_URL . '/assets/css/admin.css', [], JOB_MANAGER_VERSION );
+		}
 	}
 
 }
