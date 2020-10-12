@@ -21,7 +21,7 @@ namespace BengalStudio;
 function the_company_description( $post = null ) {
 	$company_description = get_the_company_description( $post );
 	if ( $company_description ) {
-		WP_Job_Manager_Post_Types::output_kses_post( $company_description );
+		\WP_Job_Manager_Post_Types::output_kses_post( $company_description );
 	}
 }
 

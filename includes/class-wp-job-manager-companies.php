@@ -49,8 +49,16 @@ final class WP_Job_Manager_Companies {
 		$this->post_types = WP_Job_Manager_Companies_Post_Types::instance();
 
 		// Actions.
+		add_action( 'after_setup_theme', [ $this, 'include_template_functions' ], 11 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ] );
 		add_filter( 'job_manager_locate_template', [ $this, 'locate_template' ], 10, 2 );
+	}
+
+	/**
+	 * Loads plugin's core helper template functions.
+	 */
+	public function include_template_functions() {
+		include_once WP_JOB_MANAGER_COMPANIES_PLUGIN_DIR . '/wp-job-manager-companies-template.php';
 	}
 
 	/**

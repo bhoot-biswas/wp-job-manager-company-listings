@@ -12,6 +12,8 @@
  * @version     0.1.0
  */
 
+namespace BengalStudio;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -27,7 +29,7 @@ global $post;
 	?>
 
 	<div class="company_description">
-		<?php wpjm_the_company_description(); ?>
+		<?php the_company_description(); ?>
 	</div>
 
 	<?php
