@@ -50,6 +50,7 @@ final class WP_Job_Manager_Companies {
 
 		// Actions.
 		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ] );
+		add_filter( 'job_manager_locate_template', [ $this, 'locate_template' ], 10, 2 );
 	}
 
 	/**
@@ -72,6 +73,20 @@ final class WP_Job_Manager_Companies {
 			[],
 			$asset_file['version']
 		);
+	}
+
+	/**
+	 * [locate_template description]
+	 * @param  [type] $template      [description]
+	 * @param  [type] $template_name [description]
+	 * @return [type]                [description]
+	 */
+	public function locate_template( $template, $template_name ) {
+		if ( file_exists( trailingslashit( WP_JOB_MANAGER_COMPANIES_PLUGIN_DIR . '/templates/' ) . $template_name ) ) {
+			return trailingslashit( WP_JOB_MANAGER_COMPANIES_PLUGIN_DIR . '/templates/' ) . $template_name;
+		}
+
+		return $template;
 	}
 
 }
