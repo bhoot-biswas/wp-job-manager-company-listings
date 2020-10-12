@@ -39,6 +39,9 @@ class WP_Job_Manager_Companies_Post_Types {
 	 */
 	public function __construct() {
 		add_action( 'init', [ $this, 'register_post_types' ], 0 );
+
+		// Single company content.
+		$this->company_content_filter( true );
 	}
 
 	/**
@@ -207,7 +210,7 @@ class WP_Job_Manager_Companies_Post_Types {
 				'show_in_rest'      => true,
 				'sanitize_callback' => [ 'WP_Job_Manager_Post_Types', 'sanitize_meta_field_url' ],
 			],
-			'_featured'         => [
+			'_featured' => [
 				'label'              => __( 'Featured Listing', 'wp-job-manager-companies' ),
 				'type'               => 'checkbox',
 				'description'        => __( 'Featured listings will be sticky during searches, and can be styled differently.', 'wp-job-manager-companies' ),
@@ -231,6 +234,47 @@ class WP_Job_Manager_Companies_Post_Types {
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Toggles content filter on and off.
+	 *
+	 * @param bool $enable
+	 */
+	private function company_content_filter( $enable ) {
+		if ( ! $enable ) {
+			remove_filter( 'the_content', [ $this, 'company_content' ] );
+		} else {
+			add_filter( 'the_content', [ $this, 'company_content' ] );
+		}
+	}
+
+	/**
+	 * Adds extra content before/after the post for single company listings.
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	public function company_content( $content ) {
+		global $post;
+
+		if ( ! is_singular( 'company_listing' ) || ! in_the_loop() || 'company_listing' !== $post->post_type ) {
+			return $content;
+		}
+
+		ob_start();
+
+		$this->company_content_filter( false );
+
+		do_action( 'company_content_start' );
+
+		get_job_manager_template_part( 'content-single', 'company_listing' );
+
+		do_action( 'company_content_end' );
+
+		$this->company_content_filter( true );
+
+		return apply_filters( 'job_manager_single_company_content', ob_get_clean(), $post );
 	}
 
 }
