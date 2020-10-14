@@ -39,6 +39,7 @@ class WP_Job_Manager_Companies_Post_Types {
 	 */
 	public function __construct() {
 		add_action( 'init', [ $this, 'register_post_types' ], 0 );
+		add_filter( 'job_manager_job_listing_data_fields', [ $this, 'filter_job_listing_data_fields' ] );
 
 		// Single company content.
 		$this->company_content_filter( true );
@@ -231,6 +232,21 @@ class WP_Job_Manager_Companies_Post_Types {
 		// Ensure default fields are set.
 		foreach ( $fields as $key => $field ) {
 			$fields[ $key ] = array_merge( $default_field, $field );
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * [filter_job_listing_data_fields description]
+	 * @param  [type] $fields [description]
+	 * @return [type]         [description]
+	 */
+	public function filter_job_listing_data_fields( $fields ) {
+		foreach ( [ '_company_name', '_company_website', '_company_tagline', '_company_twitter', '_company_video' ] as $field ) {
+			if ( isset( $fields[ $field ] ) ) {
+				unset( $fields[ $field ] );
+			}
 		}
 
 		return $fields;
