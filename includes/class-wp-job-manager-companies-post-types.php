@@ -254,7 +254,7 @@ class WP_Job_Manager_Companies_Post_Types {
 			'type'     => 'select',
 			'required' => true,
 			'priority' => 3,
-			'options'  => [],
+			'options'  => dropdown_companies(),
 		);
 
 		return $fields;

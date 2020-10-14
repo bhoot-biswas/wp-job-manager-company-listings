@@ -58,6 +58,7 @@ final class WP_Job_Manager_Companies {
 	 * Loads plugin's core helper template functions.
 	 */
 	public function include_template_functions() {
+		include_once WP_JOB_MANAGER_COMPANIES_PLUGIN_DIR . '/wp-job-manager-companies-functions.php';
 		include_once WP_JOB_MANAGER_COMPANIES_PLUGIN_DIR . '/wp-job-manager-companies-template.php';
 	}
 

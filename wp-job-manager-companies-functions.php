@@ -25,14 +25,7 @@ function dropdown_companies( $args = [] ) {
 	$args = wp_parse_args( $args, $defaults );
 
 	$dropdown_companies = array( '' => __( 'Select a company', 'wp-job-manager-companies' ) );
-	$companies          = get_posts(
-		array(
-			'post_type'      => 'attachment',
-			'posts_per_page' => -1,
-			'post_status'    => 'any',
-			'post_parent'    => $post->ID,
-		)
-	);
+	$companies          = get_posts( $args );
 
 	if ( $companies ) {
 		foreach ( $companies as $company ) {
