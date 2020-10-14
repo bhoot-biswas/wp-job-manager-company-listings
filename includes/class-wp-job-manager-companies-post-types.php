@@ -249,6 +249,14 @@ class WP_Job_Manager_Companies_Post_Types {
 			}
 		}
 
+		$fields['_company_id'] = array(
+			'label'    => __( 'Company', 'wp-job-manager-companies' ),
+			'type'     => 'select',
+			'required' => true,
+			'priority' => 3,
+			'options'  => [],
+		);
+
 		return $fields;
 	}
 
